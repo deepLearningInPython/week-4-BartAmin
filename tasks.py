@@ -1,5 +1,5 @@
 import numpy as np
-
+#%%
 # Follow the tasks below to practice basic Python concepts.
 # Write your code in between the dashed lines.
 # Don't import additional packages. Numpy suffices.
@@ -19,7 +19,6 @@ import numpy as np
 # create a simple tokenizer to split a sentence into words and remove punctuation.
 
 
-
 # Task 1: Given a paragraph of text, implement a simple "tokenizer" that splits the paragraph 
 #   into individual words (tokens) and removes any punctuation. Implement this using a list 
 #   comprehension.
@@ -29,14 +28,11 @@ import numpy as np
 text = "The quick brown fox jumps over the lazy dog!"
 
 # Write a list comprehension to tokenize the text and remove punctuation
-tokens = _ # Your code here
+tokens = [word.strip(',?.!:/()') for word in text.split()]
 
 # Expected output: ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']
 print(tokens)
 # -----------------------------------------------
-
-
-
 
 # Task 2: Create a function that takes a string and breaks it up into tokens and removes any 
 #   punctuation, and then converts each token to lowercase. The function should returns unique 
@@ -45,12 +41,11 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    pass # Your code
-
-
+    clean = [word.strip(',?.!:/()') for word in string.split()]
+    clean = [word.lower() for word in clean]
+    clean = sorted(clean)
+    return clean
 # -----------------------------------------------
-
-
 
 # [B] Dictionary Comprehensions: Frequency Count of Tokens
 #     Objective: Practice dictionary comprehensions for token frequency counts.
@@ -74,14 +69,19 @@ def tokenize(string: str) -> list:
 
 # Your code here:
 # -----------------------------------------------
-word_frequencies = _ # Your code here
+
+
+# Count word frequencies
+text = "The quick brown fox jumps over the lazy dog!"
+tokens = tokenize(text)
+word_frequencies = {word: tokens.count(word) for word in tokens if tokens.count(word) > 1}
 
 # Expected output example: {'the': 2, 'quick': 1, ...}
 print(word_frequencies)
 
+
 # Modify the comprehension to include only words that appear more than once.
 # -----------------------------------------------
-
 
 
 # Task 4: Define a function that takes a string and an integer k, and returns a dictionary with
@@ -90,15 +90,14 @@ print(word_frequencies)
 # Your code here:
 # -----------------------------------------------
 def token_counts(string: str, k: int = 1) -> dict:
-    pass # Your code
+    tokens = tokenize(string)  # Ensure this produces the tokenized list
+    return {word: tokens.count(word) for word in tokens if tokens.count(word) > k}
 
 # test:
 text_hist = {'the': 2, 'quick': 1, 'brown': 1, 'fox': 1, 'jumps': 1, 'over': 1, 'lazy': 1, 'dog': 1}
 all(text_hist[key] == value for key, value in token_counts(text).items())
 # -----------------------------------------------
-
-
-
+ 
 
 # [C] Sets & Dictionary comprehension: Mapping unique tokens to numbers and vice versa
 #   Objective: Practice dictionary comprehensions and create mappings from tokens to unique 
@@ -119,22 +118,27 @@ all(text_hist[key] == value for key, value in token_counts(text).items())
 #   `token_to_id`: a dictionary that maps each token to a unique integer ID.
 #   `id_to_token`: a dictionary that maps each unique integer ID back to the original token.
 
+
 # Your code here:
 # -----------------------------------------------
-token_to_id = _ # Your code here
+token_to_id = {}
+for index, word in enumerate(tokenize(text)):
+    if word not in list(token_to_id.values()):
+        token_to_id[word] = index
 
 # Expected output: {'dog': 0, 'quick': 1, 'fox': 2, 'the': 3, 'over': 4, 'lazy': 5, 'brown': 6, 'jumps': 7}
 print(token_to_id)
 # -----------------------------------------------
 
-
-
 # Task 6: Define a dictionary that reverses the maping in `token2int`
 #
 # Your code here:
 # -----------------------------------------------
-id_to_token = _ # Your code here
-
+id_to_token = {}
+for word, index in token_to_id.items():
+    id_to_token[index] = word
+print(id_to_token)
+#%%
 # tests: 
 # test 1
 assert id_to_token[token_to_id['dog']] == 'dog'
@@ -206,7 +210,7 @@ sigmoid = _ # Your code
 # Test:
 np.all(sigmoid(np.log([1, 1/3, 1/7])) == np.array([1/2, 1/4, 1/8]))
 # -----------------------------------------------
-
+#%%
 
 ################  O P T I O N A L  ##############
 
@@ -393,3 +397,5 @@ plt.plot(linreg_pred)
 plt.legend(['Truth','RNN','LinReg'])
 
 
+
+# %%
